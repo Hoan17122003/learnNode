@@ -1,0 +1,26 @@
+<div class='mt-4'>
+    <h3>Sữa Khóa Học</h3>
+    <form method='POST' action='/course/{{course._id}}?_method=PUT'>
+        <div class='form-group'>
+            <label for='name'>Tên Khóa Học</label>
+            <input type='text' name='name' value='{{course.name}}' id='name' placeholder='Nhập Tên Khóa Học' />
+        </div>
+        <div class='form-group'>
+            <label for='description'>Mô tả Khóa Học</label>
+            <textarea name='description' id='description'>{{course.description}}</textarea>
+        </div>
+        <div class='form-group'>
+            <label for='image'>Hình Ảnh Khóa Học</label>
+            <input type='file' name='image' value='{{course.image}}' id='image' />
+        </div>
+        <div class='form-group'>
+            <label for='slug'>Ngôn Ngữ Lập Trình</label>
+            <input type='text' name='slug' value='{{course.slug}}' id='slug' placeholder='nhập ngôn ngữ lập trình' />
+        </div>
+        <div class='form-group'>
+            <label for='videoID'>Video Link</label>
+            <input type='file' name='videoID' value='{{course.videoID}}' id='videoID' />
+        </div>
+        <button type='submit'>Lưu l</button>
+    </form>
+</div>

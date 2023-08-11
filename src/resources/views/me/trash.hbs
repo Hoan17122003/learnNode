@@ -1,0 +1,121 @@
+<div class='mt-4'>
+    <div>
+        <h3>danh sách khóa học bị xóa</h3>
+        <a href="/me/stored/course">quay lại</a>
+    </div>
+
+    <table class='table mt-4'>
+        <thead>
+            <tr>
+                <th scope='col'>#</th>
+                <th scope='col'>Tên khóa học</th>
+                <th scope='col'>Mô tả khóa học</th>
+                <th scope='col' colspan='2'>Thời gian tạo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each course}}
+                <tr>
+                    <th scope='row'>{{sum @index 1}}</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.updatedAt}}</td>
+                    <td>
+                        <a href='#' class='btn btn-link btn-restore' data-id='{{this._id}}' >khôi phục</a>
+                        <a
+                            href='#'
+                            class='btn-linka'
+                            data-toggle='modal'
+                            data-target='#delete-course-modal'
+                            data-id={{{this._id}}}
+                        >xóa</a>
+                    </td>
+                </tr>
+            {{else}}
+                <tr>
+                    <td colspan='5' class='text-center'>
+                        thùng rác trống
+                        <a href='/me/stored/course'>danh sách khóa học </a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+<form name="delete-course-form" method="post"></form>
+<form name="restore-course-form" method="post"></form>
+
+
+<script>
+         const $ = document.querySelector.bind(document);
+    const $$ = document.querySelectorAll.bind(document);
+    (function() {
+        const deleteCourse = $$('.btn-linka');
+        const restoreBtn = $$('.btn-restore');
+        restoreBtn.forEach(function(element,index) {
+            // restore btn click
+            element.onclick = function(e) {
+                console.log(element.getAttribute('data-id'))
+                const restoreForm = document.forms['restore-course-form']
+                console.log(restoreForm);
+                restoreForm.action = `/course/${element.getAttribute('data-id')}/restore?_method=PUT`;
+                e.preventDefault();
+                restoreForm.submit();
+            }
+            element.removeEventListener('click', function(e) {e.preventDefault();})
+        })
+        deleteCourse.forEach(function(element,index) {
+           
+            element.onclick = function(e) {
+                e.preventDefault();
+                console.log('hehe')
+            const app =$('#app');
+            const elementWrapper = document.createElement('div');
+            elementWrapper.setAttribute('class','wrapper')
+            app.appendChild(elementWrapper);
+            
+            
+            elementWrapper.innerHTML = `
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+    </div>
+  </div>
+</div>`;
+            const modal = $('.modal')
+            modal.style.display = 'block'
+            modal.querySelectorAll('.modal-footer > button').forEach(function(buttonElement,index) {
+                buttonElement.onclick = function(e) {
+                    if(e.target.textContent == 'Close') {
+                        elementWrapper.remove();
+                    }
+                    if(e.target.textContent == 'Save changes') {
+                        const form = document.forms['delete-course-form'];
+                        console.log(element.getAttribute('data-id'));
+                        form.action = `/course/${element.getAttribute('data-id')}/force?_method=DELETE`;
+                        console.log(form.action)
+                        form.submit();
+                        elementWrapper.remove()
+                    }
+                }
+            })
+            }
+            element.removeEventListener('click',function() {
+                console.log('success')
+            })
+        })
+    })()
+</script>

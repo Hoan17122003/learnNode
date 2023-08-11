@@ -1,0 +1,109 @@
+<div class='mt-4'>
+    <div>
+        <h3>Khóa học của tôi</h3>
+        <a href='/me/trash/course'>Thùng rác ({{countDelete}})</a>
+    </div>
+
+    <table class='table mt-4'>
+        <thead>
+            <tr>
+                <th scope='col'>#</th>
+                <th scope='col'>Tên khóa học</th>
+                <th scope='col'>Mô tả khóa học</th>
+                <th scope='col' colspan='2'>Thời gian tạo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each course}}
+                <tr>
+                    <th scope='row'>{{sum @index 1}}</th>
+                    <td>{{this.name}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.updatedAt}}</td>
+                    <td>
+                        <a href='/course/{{this._id}}/edit' class='btn btn-link'>Sửa</a>
+                        <a
+                            href=''
+                            class='btn-linka'
+                            data-toggle='modal'
+                            data-id='{{this._id}}'
+                            data-target='#delete-course-modal'
+                        >Xóa</a>
+                    </td>
+                </tr>
+            {{else}}
+                <tr>
+                    <td colspan='5' class='text-center'>
+                        Bạn chưa đăng khóa học nào.
+                        <a href='/course/create'>Đăng khóa học</a>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+
+{{! Confirm delete course }}
+<form name="delete-course-form" method='POST' ></form>
+
+{{! Delete hidden form }}
+
+<script>
+    const $ = document.querySelector.bind(document);
+    const $$ = document.querySelectorAll.bind(document);
+    (function() {
+        const deleteCourse = $$('.btn-linka');
+        deleteCourse.forEach(function(element,index) {
+           
+            element.onclick = function(e) {
+                e.preventDefault()
+                console.log('hehe')
+            const app =$('#app');
+            const elementWrapper = document.createElement('div');
+            elementWrapper.setAttribute('class','wrapper')
+            app.appendChild(elementWrapper);
+            
+            
+            elementWrapper.innerHTML = `
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+    </div>
+  </div>
+</div>`;
+            const modal = $('.modal')
+            modal.style.display = 'block'
+            modal.querySelectorAll('.modal-footer > button').forEach(function(buttonElement,index) {
+                buttonElement.onclick = function(e) {
+                    if(e.target.textContent == 'Close') {
+                        elementWrapper.remove();
+                    }
+                    if(e.target.textContent == 'Save changes') {
+                        const form = document.forms['delete-course-form'];
+                        form.action = `/me/stored/course/${element.getAttribute('data-id')}?_method=POST`;
+                        console.log(form.action)
+                        form.submit();
+                        elementWrapper.remove()
+                        console.log(elementWrapper);
+                    }
+                }
+            })
+            }
+            element.removeEventListener('click',function() {
+                console.log('success')
+            })
+        })
+    })()
+</script>

@@ -1,0 +1,26 @@
+<div method = 'post' class='mt-4'>
+    <h3>Đăng Khóa Học</h3>
+    <form method="POST" action="/course/store">
+        <div class='form-group'>
+            <label for='name'>Tên Khóa Học</label>
+            <input type='text' name="name" id='name-course' placeholder='Nhập Tên Khóa Học' />
+        </div>
+        <div class='form-group'>
+            <label for='description'>Mô tả Khóa Học</label>
+            <input type='text' name = 'description' id='description' placeholder='Nhập mô tả khóa học' />
+        </div>
+        <div class='form-group'>
+            <label for='image'>Hình Ảnh Khóa Học</label>
+            <input type='file' name="image" id='image-course' />
+        </div>
+        <div class='form-group'>
+            <label for='slug'>Ngôn Ngữ Lập Trình</label>
+            <input type='text' name="slug" id='nnlt' placeholder='nhập ngôn ngữ lập trình' />
+        </div>
+        <div class='form-group'>
+            <label for='videoID'>Video Link</label>
+            <input type='file' name="videoID"  id='videoID' />
+        </div>
+        <button type="submit">submit</button>
+    </form>
+</div>
